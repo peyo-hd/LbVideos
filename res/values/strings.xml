@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LbVideos</string>
+        
+    <string name="about_preference">About</string>
+
+    <string name="videos_url">https://storage.googleapis.com/android-tv/android_tv_videos_new.json</string>
+</resources>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/main_fragment">
+
+    <fragment
+        android:id="@+id/main_fragment"
+        android:name="com.peyo.lbvideos.MainFragment"
+        android:label="Video Browser" >
+        <action
+            android:id="@+id/action_main_to_details"
+            app:destination="@id/details_fragment" />
+        <action
+            android:id="@+id/action_main_to_playback"
+            app:destination="@id/playback_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/details_fragment"
+        android:name="com.peyo.lbvideos.DetailsFragment"
+        android:label="Details Screen">
+        <argument
+            android:name="title_resource"
+            app:argType="integer"/>
+        <argument
+            android:name="icon_resource"
+            app:argType="integer"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/playback_fragment"
+        android:name="com.peyo.lbvideos.PlaybackFragment"
+        android:label="Playback Screen" >
+        <argument
+            android:name="metadata"
+            app:argType="com.peyo.lbvideos.database.VideoMetadata"/>
+    </fragment>
+
+</navigation>

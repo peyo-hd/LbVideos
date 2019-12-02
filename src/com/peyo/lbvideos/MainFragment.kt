@@ -30,11 +30,8 @@ class MainFragment : BrowseSupportFragment() {
         headersState = HEADERS_HIDDEN
 
         onItemViewClickedListener = OnItemViewClickedListener { _, item, _, _ ->
-            //findNavController().navigate(MainFragmentDirections.actionMainToDetails(
-            //        R.string.about_preference, R.drawable.ic_settings_about))
-
             val metadata = item as VideoMetadata
-            findNavController().navigate(MainFragmentDirections.actionMainToPlayback(metadata))
+            findNavController().navigate(MainFragmentDirections.actionMainToDetails(metadata))
         }
 
         database = VideoDatabase.getInstance(requireContext())
@@ -96,9 +93,6 @@ class MainFragment : BrowseSupportFragment() {
     )
 
     private fun parseMediaFeed() : FeedParseResult {
-        //val stream = context!!.resources.openRawResource(R.raw.videos)
-        //val data = JSONObject(String(stream.readBytes(), StandardCharsets.UTF_8))
-
         val data = fetchJSON(requireContext().resources.getString(R.string.videos_url))
 
         val metadatas: MutableList<VideoMetadata> = mutableListOf()

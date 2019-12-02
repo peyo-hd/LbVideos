@@ -11,9 +11,6 @@
         <action
             android:id="@+id/action_main_to_details"
             app:destination="@id/details_fragment" />
-        <action
-            android:id="@+id/action_main_to_playback"
-            app:destination="@id/playback_fragment" />
     </fragment>
 
     <fragment
@@ -21,11 +18,11 @@
         android:name="com.peyo.lbvideos.DetailsFragment"
         android:label="Details Screen">
         <argument
-            android:name="title_resource"
-            app:argType="integer"/>
-        <argument
-            android:name="icon_resource"
-            app:argType="integer"/>
+            android:name="metadata"
+            app:argType="com.peyo.lbvideos.database.VideoMetadata"/>
+        <action
+            android:id="@+id/action_details_to_playback"
+            app:destination="@id/playback_fragment" />
     </fragment>
 
     <fragment

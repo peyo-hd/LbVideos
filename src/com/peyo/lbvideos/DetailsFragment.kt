@@ -1,15 +1,18 @@
 package com.peyo.lbvideos
 
-
 import android.os.Bundle
 import androidx.leanback.app.DetailsSupportFragment
 import androidx.leanback.widget.*
-import java.io.IOException
-import java.io.InputStream
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import coil.Coil
+import coil.api.get
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class DetailsFragment : DetailsSupportFragment() {
-    private var titleRes: Int = 0
-    private var iconRes: Int = 0
+    private val args: DetailsFragmentArgs by navArgs()
 
     private val overview: DetailsOverviewRow
         get() {
@@ -19,17 +22,16 @@ class DetailsFragment : DetailsSupportFragment() {
 
             val overview = DetailsOverviewRow("Menu Item Details")
             overview.actionsAdapter = adapter
-            overview.imageDrawable = resources.getDrawable(iconRes, null)
 
+            lifecycleScope.launch(Dispatchers.IO) {
+                overview.imageDrawable = Coil.get(args.metadata.card)
+            }
             return overview
         }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val args = DetailsFragmentArgs.fromBundle(arguments!!)
-        titleRes = args.titleResource
-        iconRes = args.iconResource
 
         val selector = ClassPresenterSelector()
         selector.addClassPresenter(DetailsOverviewRow::class.java,
@@ -41,18 +43,24 @@ class DetailsFragment : DetailsSupportFragment() {
         rows.add(overview)
         adapter = rows
 
+        onItemViewClickedListener = OnItemViewClickedListener { _, item, _, _ ->
+            if (item is Action) {
+                if (item.id == 1L) {
+                    findNavController().navigate(DetailsFragmentDirections
+                            .actionDetailsToPlayback(args.metadata))
+                } else {
+                    findNavController().popBackStack()
+                }
+            }
+        }
     }
 
     inner class DetailsDescriptionPresenter : AbstractDetailsDescriptionPresenter() {
         override fun onBindDescription(
                 vh: ViewHolder, item: Any) {
-            vh.title.text = resources.getString(titleRes)
-            vh.subtitle.text = "Menu Item Details"
-            vh.body.text = ("Lorem ipsum dolor sit amet, consectetur "
-                    + "adipisicing elit, sed do eiusmod tempor incididunt ut labore "
-                    + " et dolore magna aliqua. Ut enim ad minim veniam, quis "
-                    + "nostrud exercitation ullamco laboris nisi ut aliquip ex ea "
-                    + "commodo consequat.")
+            vh.title.text = args.metadata.title
+            vh.subtitle.text = args.metadata.studio
+            vh.body.text = args.metadata.description
         }
     }
 }

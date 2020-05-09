@@ -80,9 +80,7 @@ class MainFragment : BrowseSupportFragment() {
     }
 
     private fun synchronize() {
-        val database = VideoDatabase.getInstance(requireContext())
         val feed = parseMediaFeed()
-
         database.metadata().insert(*feed.metadata.toTypedArray())
         database.collections().insert(*feed.collections.toTypedArray())
     }
